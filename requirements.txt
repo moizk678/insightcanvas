@@ -1,0 +1,12 @@
+Flask
+Werkzeug
+pandas
+matplotlib
+seaborn
+scikit-learn
+numpy
+prophet
+reportlab
+XlsxWriter
+pyodbc
+gunicorn

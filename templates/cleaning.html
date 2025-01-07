@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Cleaning Insights</title>
+    <!-- Add Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #e0eafc, #cfdef3);
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        h2 {
+            font-weight: 600;
+            color: #444;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h3 {
+            font-weight: 500;
+            color: #555;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        table {
+            margin-top: 20px;
+        }
+
+        table th {
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            color: white;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        table td {
+            text-align: center;
+            padding: 10px;
+            vertical-align: middle;
+        }
+
+        table tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .shadow-sm {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        .alert {
+            margin-top: 20px;
+            padding: 15px;
+            font-size: 1rem;
+            border-radius: 8px;
+        }
+
+        .alert-success {
+            background: #dff9fb;
+            color: #0984e3;
+            border: 1px solid #74b9ff;
+        }
+
+        .alert-danger {
+            background: #ff7675;
+            color: white;
+            border: 1px solid #d63031;
+        }
+
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #0984e3;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="backdrop-filter: blur(10px); background: rgba(255, 255, 255, 0.4);">
+    <div class="container">
+        <a class="navbar-brand text-dark fw-bold" href="/" style="font-size: 1.8rem;">
+            <i class="bi bi-speedometer2"></i> Data Cleaning Insights
+        </a>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link btn custom-btn text-white fw-semibold px-4 py-2 rounded-pill shadow-sm" href="/">
+                        Back to Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn custom-btn text-white fw-semibold px-4 py-2 rounded-pill shadow-sm" href="/charts">
+                        Charts
+                    </a>
+                </li>
+<li class="nav-item">
+                    <a class="nav-link btn custom-btn text-white fw-semibold px-4 py-2 rounded-pill shadow-sm" href="/statistics">
+                        Descriptive Statistics
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn custom-btn text-white fw-semibold px-4 py-2 rounded-pill shadow-sm" href="/forecast">
+                        Forecast
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<style>
+/* Frosted Glass Effect for Navbar */
+.navbar {
+    backdrop-filter: blur(15px); /* Frosted glass blur effect */
+    background: rgba(255, 255, 255, 0.4); /* Semi-transparent background */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow for separation */
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.navbar:hover {
+    background: rgba(255, 255, 255, 0.6); /* Slightly less transparent on hover */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+}
+
+/* Navbar Brand */
+.navbar-brand {
+    font-size: 1.8rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand i {
+    margin-right: 10px;
+    font-size: 1.5rem;
+}
+
+/* Buttons with Modern Gradient and Hover Effects */
+.nav-link.btn {
+    background: linear-gradient(135deg, #6a11cb, #2575fc); /* Gradient background */
+    color: white !important;
+    font-size: 1rem;
+    border: none;
+    border-radius: 50px; /* Smooth pill shape */
+    padding: 8px 15px; /* Add padding for better appearance */
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth animations */
+    margin: 0 10px; /* Add horizontal spacing between buttons */
+}
+
+.nav-link.btn:hover {
+    transform: translateY(-3px); /* Lift effect on hover */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); /* Enhanced shadow on hover */
+}
+
+.nav-link.btn:active {
+    transform: translateY(2px); /* Pressed effect */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle pressed shadow */
+}
+
+</style>
+
+        <div style="height: 40px;"></div>
+
+    
+    <!-- Main Content -->
+    <div class="container text-center">
+        <h2></h2>
+        <div id="loader" class="loader"></div>
+        <div id="missingValues" class="shadow-sm rounded bg-white p-4 mt-4"></div>
+        <div id="handlingSuggestions" class="shadow-sm rounded bg-white p-4 mt-5"></div>
+    </div>
+
+    <!-- Add Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Add JavaScript to fetch and render insights -->
+    <script>
+        async function loadDataCleaningInsights() {
+            try {
+                const response = await fetch("/data_cleaning");
+
+                if (!response.ok) {
+                    throw new Error("Failed to fetch data cleaning insights");
+                }
+
+                const data = await response.json();
+                document.getElementById("loader").style.display = "none"; // Hide loader
+
+                // Render Missing Values
+                const missingValuesContainer = document.getElementById("missingValues");
+                const missingValues = data.missing_values;
+
+                if (Object.keys(missingValues).length > 0) {
+                    let missingHTML = "<h3>Missing Values (%)</h3><table class='table table-bordered'><thead><tr><th>Column</th><th>Missing Percentage</th></tr></thead><tbody>";
+                    for (let col in missingValues) {
+                        missingHTML += `<tr><td>${col}</td><td>${missingValues[col].toFixed(2)}%</td></tr>`;
+                    }
+                    missingHTML += "</tbody></table>";
+                    missingValuesContainer.innerHTML = missingHTML;
+                } else {
+                    missingValuesContainer.innerHTML = `<div class='alert alert-success'>No missing values found in the dataset.</div>`;
+                }
+
+                // Render Suggestions
+                const suggestionsContainer = document.getElementById("handlingSuggestions");
+                const suggestions = data.suggestions;
+
+                if (Object.keys(suggestions).length > 0) {
+                    let suggestionsHTML = "<h3>Handling Suggestions</h3><table class='table table-bordered'><thead><tr><th>Column</th><th>Suggestion</th></tr></thead><tbody>";
+                    for (let col in suggestions) {
+                        suggestionsHTML += `<tr><td>${col}</td><td>${suggestions[col]}</td></tr>`;
+                    }
+                    suggestionsHTML += "</tbody></table>";
+                    suggestionsContainer.innerHTML = suggestionsHTML;
+                } else {
+                    suggestionsContainer.innerHTML = `<div class='alert alert-success'>No suggestions available.</div>`;
+                }
+            } catch (error) {
+                console.error("Error loading data cleaning insights:", error);
+                document.getElementById("loader").style.display = "none"; // Hide loader
+                document.getElementById("missingValues").innerHTML =
+                    "<div class='alert alert-danger'>Error loading missing values. Please try again.</div>";
+                document.getElementById("handlingSuggestions").innerHTML =
+                    "<div class='alert alert-danger'>Error loading suggestions. Please try again.</div>";
+            }
+        }
+
+        // Load insights on page load
+        window.onload = loadDataCleaningInsights;
+    </script>
+</body>
+</html>

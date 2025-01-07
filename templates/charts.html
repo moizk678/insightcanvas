@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charts</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+<body>
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="backdrop-filter: blur(10px); background: rgba(255, 255, 255, 0.4);">
+    <div class="container">
+        <a class="navbar-brand text-dark fw-bold" href="/" style="font-size: 1.8rem;">
+            <i class="bi bi-speedometer2"></i> Dashboard
+        </a>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link btn custom-btn text-white fw-semibold px-4 py-2 rounded-pill shadow-sm" href="/">
+                        Back to Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn custom-btn text-white fw-semibold px-4 py-2 rounded-pill shadow-sm" href="/statistics">
+                        Descriptive Statistics
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn custom-btn text-white fw-semibold px-4 py-2 rounded-pill shadow-sm" href="/cleaning">
+                        Data Cleaning Insights
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<style>
+/* Frosted Glass Effect for Navbar */
+.navbar {
+    backdrop-filter: blur(15px); /* Frosted glass blur effect */
+    background: rgba(255, 255, 255, 0.4); /* Semi-transparent background */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow for separation */
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.navbar:hover {
+    background: rgba(255, 255, 255, 0.6); /* Slightly less transparent on hover */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+}
+
+/* Navbar Brand */
+.navbar-brand {
+    font-size: 1.8rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand i {
+    margin-right: 10px;
+    font-size: 1.5rem;
+}
+
+/* Buttons with Modern Gradient and Hover Effects */
+.nav-link.btn {
+    background: linear-gradient(135deg, #6a11cb, #2575fc); /* Gradient background */
+    color: white !important;
+    font-size: 1rem;
+    border: none;
+    border-radius: 50px; /* Smooth pill shape */
+    padding: 8px 15px; /* Add padding for better appearance */
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth animations */
+    margin: 0 10px; /* Add horizontal spacing between buttons */
+}
+
+.nav-link.btn:hover {
+    transform: translateY(-3px); /* Lift effect on hover */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); /* Enhanced shadow on hover */
+}
+
+.nav-link.btn:active {
+    transform: translateY(2px); /* Pressed effect */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle pressed shadow */
+}
+
+</style>
+
+
+
+
+<!-- Main Charts Section -->
+<section id="chartsSection" class="py-5">
+    <div class="container">
+        <h1 class="text-center fw-bold text-white mb-5">Interactive Charts</h1>
+        <div class="row">
+            <!-- Bar Chart -->
+            <div class="col-md-6 col-lg-6 mb-4">
+                <div class="card shadow border-0">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Bar Chart</h5>
+                        <canvas id="barChart" class="expandable-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Line Chart -->
+            <div class="col-md-6 col-lg-6 mb-4">
+                <div class="card shadow border-0">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Line Chart</h5>
+                        <canvas id="lineChart" class="expandable-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Scatter Plot -->
+            <div class="col-md-6 col-lg-6 mb-4">
+                <div class="card shadow border-0">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Scatter Plot</h5>
+                        <canvas id="scatterPlot" class="expandable-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Histogram -->
+            <div class="col-md-6 col-lg-6 mb-4">
+                <div class="card shadow border-0">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Histogram</h5>
+                        <canvas id="histogramChart" class="expandable-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Pareto Chart -->
+            <div class="col-md-6 col-lg-6 mb-4">
+                <div class="card shadow border-0">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Pareto Chart</h5>
+                        <canvas id="paretoChart" class="expandable-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bubble Chart -->
+            <div class="col-md-6 col-lg-6 mb-4">
+                <div class="card shadow border-0">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Bubble Chart</h5>
+                        <canvas id="bubbleChart" class="expandable-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Pie Chart -->
+            <div class="col-md-6 col-lg-6 mb-4">
+                <div class="card shadow border-0">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Pie Chart</h5>
+                        <canvas id="pieChart" class="expandable-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Area Chart -->
+            <div class="col-md-6 col-lg-6 mb-4">
+                <div class="card shadow border-0">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Area Chart</h5>
+                        <canvas id="areaChart" class="expandable-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Enhanced Gradient Background */
+    #chartsSection {
+        background: linear-gradient(
+            135deg,
+            #ff9a9e,
+            #fad0c4,
+            #fbc2eb,
+            #a1c4fd,
+            #c2e9fb,
+            #667eea,
+            #764ba2,
+            #ff9a9e
+        );
+        background-size: 300% 300%;
+        animation: gradientBG 10s ease infinite;
+        min-height: 100vh;
+        padding: 20px 0;
+    }
+
+    /* Gradient Animation */
+    @keyframes gradientBG {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    /* Chart Cards */
+    .card {
+        border-radius: 15px;
+        background: rgba(255, 255, 255, 0.85); /* Frosted glass effect */
+        backdrop-filter: blur(12px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #333;
+    }
+
+    /* Section Title */
+    #chartsSection h1 {
+        font-size: 3rem;
+        color: white;
+        text-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Chart Canvas */
+    .expandable-chart {
+        width: 100%;
+        height: 300px;
+    }
+</style>
+
+<!-- Modal Popup -->
+<div id="chartModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h3 id="modalTitle" class="text-center"></h3>
+        <canvas id="expandedChart"></canvas>
+        <div id="additionalAnalytics" class="mt-4"></div>
+    </div>
+</div>
+
+<!-- Styles for Modal -->
+<style>
+    /* Modal Background */
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0); /* Slightly darker semi-transparent background */
+        backdrop-filter: blur(30px); /* Stronger blur for the background */
+    }
+
+    /* Modal Content */
+    .modal-content {
+        background: rgba(255, 255, 255, 0.25); /* Slightly less transparent */
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px); /* Safari support */
+        margin: 5% auto;
+        padding: 30px;
+        border-radius: 20px;
+        width: 80%;
+        max-width: 650px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    /* Text Styling */
+    .modal-content h3, 
+    .modal-content h4, 
+    .modal-content p {
+        color: #333; /* Darker text for better visibility */
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); /* Subtle shadow for contrast */
+        font-weight: 600; /* Slightly bolder text */
+    }
+
+    .modal-content h3 {
+        font-size: 1.8em;
+        margin-bottom: 15px;
+    }
+
+    .modal-content h4 {
+        font-size: 1.4em;
+        margin-top: 20px;
+    }
+
+    .modal-content p {
+        font-size: 1.2em;
+        line-height: 1.5;
+    }
+
+    /* Close Button */
+    .close-button {
+        position: absolute;
+        top: 15px;
+        right: 25px;
+        color: white;
+        font-size: 24px;
+        font-weight: bold;
+        cursor: pointer;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6); /* Shadow for better visibility */
+    }
+
+    .close-button:hover {
+        color: #ddd;
+    }
+    /* Expanded Chart Styling */
+    #expandedChart {
+        display: block;
+        width: 100%; /* Full width of modal */
+        height: 600px; /* Taller height for larger charts */
+    }
+</style>
+
+
+
+    <!-- Include Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/heatmap.js@2.0.5/build/heatmap.min.js"></script>
+
+
+    <!-- JavaScript to Render Charts -->
+<script>
+    // Common Chart.js Options
+    const commonOptions = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top', // Position of the legend
+                labels: {
+                    color: '#333', // Text color
+                    font: {
+                        size: 14,
+                    },
+                },
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        return `${context.dataset.label}: ${context.raw}`;
+                    },
+                },
+                backgroundColor: 'rgba(0,0,0,0.7)', // Tooltip background
+                titleColor: '#fff', // Tooltip title color
+                bodyColor: '#fff', // Tooltip text color
+            },
+        },
+        scales: {
+            x: {
+                ticks: {
+                    color: '#333',
+                    font: {
+                        size: 12,
+                    },
+                },
+                title: {
+                    display: true,
+                    text: 'Categories',
+                    color: '#333',
+                    font: {
+                        size: 16,
+                    },
+                },
+            },
+            y: {
+                ticks: {
+                    color: '#333',
+                    font: {
+                        size: 12,
+                    },
+                },
+                title: {
+                    display: true,
+                    text: 'Values',
+                    color: '#333',
+                    font: {
+                        size: 16,
+                    },
+                },
+            },
+        },
+    };
+
+    // Bar Chart
+    const barChartData = JSON.parse('{{ bar_chart_data | safe }}');
+    const barCtx = document.getElementById('barChart').getContext('2d');
+    new Chart(barCtx, {
+        type: 'bar',
+        data: {
+            labels: barChartData.labels,
+            datasets: [{
+                label: 'Average Value',
+                data: barChartData.values,
+                backgroundColor: 'rgba(75, 192, 192, 0.8)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+            }],
+        },
+        options: {
+            ...commonOptions,
+            plugins: {
+                ...commonOptions.plugins,
+                title: {
+                    display: true,
+                    text: 'Bar Chart: Average Value by Category',
+                    color: '#333',
+                    font: {
+                        size: 18,
+                    },
+                },
+            },
+        },
+    });
+
+    // Scatter Plot
+    const scatterData = JSON.parse('{{ scatter_data | safe }}');
+    const scatterCtx = document.getElementById('scatterPlot').getContext('2d');
+    new Chart(scatterCtx, {
+        type: 'scatter',
+        data: {
+            datasets: [{
+                label: 'Scatter Plot',
+                data: scatterData,
+                backgroundColor: 'rgba(255, 99, 132, 0.8)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1,
+            }],
+        },
+        options: {
+            ...commonOptions,
+            plugins: {
+                ...commonOptions.plugins,
+                title: {
+                    display: true,
+                    text: 'Scatter Plot: Relationship Between Variables',
+                    color: '#333',
+                    font: {
+                        size: 18,
+                    },
+                },
+            },
+        },
+    });
+
+    // Line Chart
+    const lineChartData = JSON.parse('{{ line_chart_data | safe }}');
+    const lineCtx = document.getElementById('lineChart').getContext('2d');
+    new Chart(lineCtx, {
+        type: 'line',
+        data: {
+            labels: lineChartData.labels,
+            datasets: [{
+                label: 'Cumulative Sum',
+                data: lineChartData.values,
+                borderColor: 'rgba(54, 162, 235, 1)',
+                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                fill: true,
+            }],
+        },
+        options: {
+            ...commonOptions,
+            plugins: {
+                ...commonOptions.plugins,
+                title: {
+                    display: true,
+                    text: 'Line Chart: Cumulative Sum Over Time',
+                    color: '#333',
+                    font: {
+                        size: 18,
+                    },
+                },
+            },
+        },
+    });
+
+    // Pie Chart
+    const pieChartData = JSON.parse('{{ pie_chart_data | safe }}');
+    const pieCtx = document.getElementById('pieChart').getContext('2d');
+    new Chart(pieCtx, {
+        type: 'pie',
+        data: {
+            labels: pieChartData.labels,
+            datasets: [{
+                data: pieChartData.values,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.8)',
+                    'rgba(54, 162, 235, 0.8)',
+                    'rgba(255, 205, 86, 0.8)',
+                ],
+            }],
+        },
+        options: {
+            plugins: {
+                ...commonOptions.plugins,
+                title: {
+                    display: true,
+                    text: 'Pie Chart: Category Distribution',
+                    color: '#333',
+                    font: {
+                        size: 18,
+                    },
+                },
+            },
+            responsive: true,
+        },
+    });
+</script>
+
+     
+<script>
+    // Heatmap Data
+    const heatmapData = JSON.parse('{{ heatmap_data | safe }}');
+
+    // Format data for heatmap.js
+    const formattedData = [];
+    const labels = Object.keys(heatmapData); // Correlation matrix labels
+    labels.forEach((rowKey, i) => {
+        labels.forEach((colKey, j) => {
+            formattedData.push({
+                x: j * 50, // Adjust cell spacing
+                y: i * 50,
+                value: heatmapData[rowKey][colKey], // Correlation value
+            });
+        });
+    });
+
+    // Create a heatmap instance
+    const heatmapInstance = h337.create({
+        container: document.getElementById('heatmapContainer'),
+        radius: 40,
+        maxOpacity: 0.8,
+        minOpacity: 0.1,
+    });
+
+    // Render the heatmap
+    heatmapInstance.setData({
+        max: 1,
+        min: -1,
+        data: formattedData,
+    });
+</script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-box-and-violin-plot"></script>
+
+    <script>
+    // Histogram
+    const histogramData = JSON.parse('{{ histogram_data | safe }}');
+    const histogramCtx = document.getElementById('histogramChart').getContext('2d');
+    new Chart(histogramCtx, {
+        type: 'bar',
+        data: {
+            labels: Object.keys(histogramData),
+            datasets: [{
+                label: 'Frequency',
+                data: Object.values(histogramData),
+                backgroundColor: 'rgba(75, 192, 192, 0.8)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+            }],
+        },
+       options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true,
+                },
+                title: {
+                    display: true,
+                    text: 'Histogram: Value Distribution',
+                    color: '#333', // Updated color
+                    font: {
+                        size: 18, // Updated font size
+                    },
+                },
+            },
+            scales: {
+                x: { title: { display: true, text: 'Values' } },
+                y: { title: { display: true, text: 'Frequency' } },
+            },
+        },
+    });
+
+   // Box Plot
+    const boxPlotData = JSON.parse('{{ box_plot_data | safe }}');
+    const boxPlotCtx = document.getElementById('boxPlotChart').getContext('2d');
+    new Chart(boxPlotCtx, {
+        type: 'boxplot',
+        data: {
+            labels: ['Box Plot'], // Single label for box plot
+            datasets: [{
+                label: 'Value Distribution',
+                data: [boxPlotData], // Box plot data must be an array of arrays
+                backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+            }],
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true,
+                },
+                title: {
+                    display: true,
+                    text: 'Box Plot: Value Distribution',
+                },
+            },
+            scales: {
+                x: { title: { display: true, text: 'Categories' } },
+                y: { title: { display: true, text: 'Values' } },
+            },
+        },
+    });
+</script>
+    
+    <script>
+    // Area Chart
+    const areaChartData = JSON.parse('{{ area_chart_data | safe }}');
+    const areaChartCtx = document.getElementById('areaChart').getContext('2d');
+    new Chart(areaChartCtx, {
+        type: 'line', // Area charts are a variation of line charts with fill enabled
+        data: {
+            labels: areaChartData.labels,
+            datasets: [{
+                label: 'Cumulative Values',
+                data: areaChartData.values,
+                borderColor: 'rgba(54, 162, 235, 1)', // Line color
+                backgroundColor: 'rgba(54, 162, 235, 0.4)', // Fill color
+                fill: true, // Enable fill for the area effect
+                tension: 0.4, // Smooth curves
+            }],
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true,
+                },
+                title: {
+                    display: true,
+                    text: 'Area Chart: Cumulative Values Over Time',
+                    color: '#333', // Updated color
+                    font: {
+                        size: 18, // Updated font size
+                    },
+                },
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Data Points',
+                    },
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Cumulative Values',
+                    },
+                },
+            },
+        },
+    });
+</script>
+    
+ <script>
+    // Pareto Chart
+    const paretoChartData = JSON.parse('{{ pareto_chart_data | safe }}');
+    const paretoChartCtx = document.getElementById('paretoChart').getContext('2d');
+    new Chart(paretoChartCtx, {
+        type: 'bar', // Primary chart type (bars)
+        data: {
+            labels: paretoChartData.labels,
+            datasets: [
+                {
+                    label: 'Frequency',
+                    data: paretoChartData.frequencies,
+                    backgroundColor: 'rgba(75, 192, 192, 0.8)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1,
+                    yAxisID: 'y', // Use the primary Y-axis
+                },
+                {
+                    label: 'Cumulative Percentage',
+                    data: paretoChartData.cumulative_percentage,
+                    type: 'line', // Secondary chart type (line)
+                    backgroundColor: 'rgba(255, 99, 132, 0.4)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 2,
+                    fill: false,
+                    yAxisID: 'y1', // Use the secondary Y-axis
+                },
+            ],
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true,
+                },
+                title: {
+                    display: true,
+                    text: 'Pareto Chart: Frequency and Cumulative Percentage',
+                    color: '#333', // Updated color
+                    font: {
+                        size: 18, // Updated font size
+                    },
+                },
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Categories',
+                    },
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Frequency',
+                    },
+                    position: 'left',
+                },
+                y1: {
+                    title: {
+                        display: true,
+                        text: 'Cumulative Percentage (%)',
+                    },
+                    position: 'right',
+                    grid: {
+                        drawOnChartArea: false, // Avoid overlapping grid lines
+                    },
+                    ticks: {
+                        callback: function (value) {
+                            return value + '%'; // Add percentage symbol
+                        },
+                    },
+                },
+            },
+        },
+    });
+</script>
+
+    
+    <script>
+// Bubble Chart
+const bubbleChartData = JSON.parse('{{ bubble_chart_data | safe }}');
+const bubbleChartCtx = document.getElementById('bubbleChart').getContext('2d');
+new Chart(bubbleChartCtx, {
+    type: 'bubble',
+    data: {
+        datasets: [{
+            label: 'Bubble Chart',
+            data: bubbleChartData,
+            backgroundColor: 'rgba(75, 192, 192, 0.8)', // Bubble color
+            borderColor: 'rgba(75, 192, 192, 1)', // Bubble border color
+            borderWidth: 1,
+        }],
+    },
+    options: {
+        ...commonOptions,
+        plugins: {
+            ...commonOptions.plugins,
+            title: {
+                display: true,
+                text: 'Bubble Chart: Multi-Dimensional Data',
+                color: '#333', // Title text color
+                font: {
+                    size: 18, // Title font size
+                },
+            },
+        },
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: 'X-Axis',
+                    color: '#333', // X-axis title color
+                    font: {
+                        size: 18, // X-axis title font size
+                    },
+                },
+                ticks: {
+                    color: '#333', // X-axis tick color
+                    font: {
+                        size: 14, // X-axis tick font size
+                    },
+                },
+            },
+            y: {
+                title: {
+                    display: true,
+                    text: 'Y-Axis',
+                    color: '#333', // Y-axis title color
+                    font: {
+                        size: 18, // Y-axis title font size
+                    },
+                },
+                ticks: {
+                    color: '#333', // Y-axis tick color
+                    font: {
+                        size: 14, // Y-axis tick font size
+                    },
+                },
+            },
+        },
+    },
+});
+
+</script>
+
+
+
+
+        
+        <!-- JavaScript for Modal Interaction -->
+<script>
+    let expandedChartInstance = null; // Store the current modal chart instance
+
+    document.querySelectorAll('.expandable-chart').forEach(chart => {
+        chart.addEventListener('click', function () {
+            const chartId = this.id;
+            openChartModal(chartId);
+        });
+    });
+
+    function openChartModal(chartId) {
+        const modal = document.getElementById('chartModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const expandedCanvas = document.getElementById('expandedChart');
+        const analyticsContainer = document.getElementById('additionalAnalytics');
+
+        // Clear existing data in modal
+        if (expandedChartInstance) {
+            expandedChartInstance.destroy(); // Destroy previous chart instance
+        }
+        analyticsContainer.innerHTML = '';
+
+        // Populate modal based on clicked chart
+        modalTitle.textContent = `Expanded View: ${chartId}`;
+        modal.style.display = 'block';
+
+        // Get the data and options for the clicked chart
+        const chartElement = Chart.getChart(chartId); // Get the original Chart.js instance
+        if (!chartElement) {
+            analyticsContainer.innerHTML = '<p>Error: Chart data not found.</p>';
+            return;
+        }
+
+        // Clone the original chart's data and options
+        const chartData = chartElement.data;
+        const chartOptions = chartElement.options;
+
+        // Render the expanded chart
+        expandedChartInstance = new Chart(expandedCanvas, {
+            type: chartElement.config.type,
+            data: chartData,
+            options: {
+                ...chartOptions,
+                plugins: {
+                    ...chartOptions.plugins,
+                    legend: { display: true },
+                },
+                responsive: true,
+            },
+        });
+
+        // Add additional analytics
+        const totalDataPoints = chartData.datasets[0].data.length;
+        const averageValue = (
+            chartData.datasets[0].data.reduce((a, b) => a + b, 0) / totalDataPoints
+        ).toFixed(2);
+
+        analyticsContainer.innerHTML = `
+            <h4>Additional Analytics</h4>
+            <p>Total Data Points: ${totalDataPoints}</p>
+            <p>Average Value: ${averageValue}</p>
+        `;
+    }
+
+    // Close modal
+    document.querySelector('.close-button').addEventListener('click', function () {
+        const modal = document.getElementById('chartModal');
+        modal.style.display = 'none';
+
+        // Destroy the modal chart instance when closing
+        if (expandedChartInstance) {
+            expandedChartInstance.destroy();
+            expandedChartInstance = null;
+        }
+    });
+
+    // Close modal on outside click
+    window.addEventListener('click', function (event) {
+        const modal = document.getElementById('chartModal');
+        if (event.target === modal) {
+            modal.style.display = 'none';
+
+            // Destroy the modal chart instance when closing
+            if (expandedChartInstance) {
+                expandedChartInstance.destroy();
+                expandedChartInstance = null;
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

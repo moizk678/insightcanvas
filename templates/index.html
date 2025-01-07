@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask Power BI Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Optional JavaScript for Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">Dashboard Analytics</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+              
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+ 
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+<!-- Hero Section -->
+<header class="bg-primary text-white text-center d-flex flex-column justify-content-center align-items-center" style="height: 100vh;">
+    <div>
+        <h1 class="display-3 fw-bold">Welcome to InsightCanvas</h1>
+        <p class="lead">Unlock insights and visualize your data with ease.</p>
+        <a href="#uploadSection" class="btn btn-light btn-lg mt-4 custom-get-started-btn">Get Started</a>
+    </div>
+</header>
+
+<style>
+    /* Fullscreen Hero Section */
+    header {
+        min-height: 100vh;
+        overflow: hidden;
+    }
+
+    /* Get Started Button Styling */
+    .custom-get-started-btn {
+        font-size: 1.5rem;
+        font-weight: bold;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        color: #333;
+        background: linear-gradient(135deg, #f6d365, #fda085); /* Gradient background */
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .custom-get-started-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .custom-get-started-btn:active {
+        transform: translateY(2px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+</style>
+
+    
+    <!-- Upload Section -->
+<section id="uploadSection" class="d-flex flex-column justify-content-center align-items-center text-center bg-light" style="height: 100vh;">
+    <div class="shadow-lg p-5 rounded bg-white" style="max-width: 600px; width: 100%;">
+        <h2 class="mb-4 fw-bold text-primary">Upload Your Dataset</h2>
+        <p class="text-muted">Upload a CSV file to generate beautiful and interactive charts.</p>
+        <form action="/upload_dataset" method="POST" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="dataset" class="form-label fw-semibold">Choose a CSV File</label>
+                <input type="file" class="form-control form-control-lg" id="dataset" name="dataset" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg custom-upload-btn mt-3">Upload</button>
+        </form>
+    </div>
+</section>
+
+<style>
+    /* Fullscreen Upload Section */
+    #uploadSection {
+        min-height: 100vh;
+        padding: 20px;
+    }
+
+    /* Upload Form Container */
+    #uploadSection .shadow-lg {
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Upload Button Styling */
+    .custom-upload-btn {
+        font-size: 1.25rem;
+        font-weight: bold;
+        padding: 0.75rem 2rem;
+        background: linear-gradient(135deg, #6a11cb, #2575fc); /* Gradient background */
+        border: none;
+        border-radius: 50px;
+        color: white;
+        transition: all 0.3s ease;
+    }
+
+    .custom-upload-btn:hover {
+        transform: translateY(-2px);
+        background: linear-gradient(135deg, #2575fc, #6a11cb); /* Reverse gradient on hover */
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .custom-upload-btn:active {
+        transform: translateY(1px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+</style>
+    
+    <script>
+    document.querySelector('.custom-get-started-btn').addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        window.scrollTo({
+            top: target.offsetTop,
+            behavior: 'smooth', // Smooth scrolling animation
+        });
+    });
+</script>
+
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light text-center py-4">
+        <p class="mb-0">© 2023 Flask Power BI Dashboard. All rights reserved.</p>
+        <small>Built with Flask, Bootstrap, and love ❤️.</small>
+    </footer>
+</body>
+
+</html>
