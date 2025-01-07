@@ -10,7 +10,6 @@ from sklearn.linear_model import LinearRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
 from reportlab.pdfgen import canvas
-import pyodbc
 import io
 import pandas as pd
 import os
